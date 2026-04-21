@@ -1,0 +1,56 @@
+
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnUpdateModal
+        data-bs-toggle="modal"
+        data-bs-target="#updateModal">Modifier un produit
+</button>
+
+<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">Modifier un produit</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nom de produit</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+          <div>
+            <label for="product-unit" class="form-label">Unité de produit</label>
+            <select class="form-select" aria-label="Default select example" id="product-unit" formControlName="unit">
+              <option [value]="unitEnum.KG">Kg</option>
+              <option [value]="unitEnum.PIECE">Pièce</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="provider" class="form-label">Fournisseur</label>
+            <input type="text" class="form-control" id="provider" formControlName="provider">
+          </div>
+
+          <div class="mb-3">
+            <label for="price" class="form-label">Prix</label>
+            <input type="text" class="form-control" id="price" formControlName="price">
+          </div>
+          <div class="mb-3">
+            <label for="product-type" class="form-label">Type de produit</label>
+            <select class="form-select" aria-label="Default select example" id="product-type" formControlName="type">
+              <option [value]="typeEnum.RAW">Matière première</option>
+              <option [value]="typeEnum.FINAL">Produit finis</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

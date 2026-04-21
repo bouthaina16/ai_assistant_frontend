@@ -1,0 +1,30 @@
+
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnQuantityModal
+        data-bs-toggle="modal"
+        data-bs-target="#updateQuantityModal">{{mode === '+' ? 'Effectuer une entré':'Effectuer une sortie'}}
+</button>
+
+<div class="modal fade" id="updateQuantityModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">Modifier la quantité d'produit</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="quantity" class="form-label">Quantité</label>
+          <input type="number" class="form-control" id="quantity" [(ngModel)]="quantity">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" [disabled]="!quantity" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

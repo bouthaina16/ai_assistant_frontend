@@ -1,0 +1,51 @@
+<div class="p-2 p-lg-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <input type="text" placeholder="Chercher" [(ngModel)]="search" (ngModelChange)="searchSubject.next($event)" class="form-control" id="searchProd">
+    </div>
+    <div class="ms-auto btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" [value]="typeEnum.RAW" [ngModel]="type" (ngModelChange)="change(typeEnum.RAW)" class="btn-sm btn-check" name="btnradio1" id="btnradio1" autocomplete="off">
+      <label class="btn btn-sm btn-outline-dark" for="btnradio1">Matière première</label>
+
+      <input type="radio" [value]="typeEnum.FINAL" [ngModel]="type" (ngModelChange)="change(typeEnum.FINAL)" class="btn-sm btn-check" name="btnradio2" id="btnradio2" autocomplete="off">
+      <label class="btn btn-sm btn-outline-dark" for="btnradio2">Produit final</label>
+    </div>
+    <app-product-create [reference]="reference" (createDraft)="createDraftProduct()" (submitCreation)="createProduct($event)" class="ms-auto"></app-product-create>
+  </div>
+  <div class="mt-3">
+    <table *ngIf="products | async as productData" class="table">
+      <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Réference</th>
+        <th scope="col">Fournisseur</th>
+        <th scope="col">Quantité</th>
+        <th scope="col">Unité</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="productCount > 0">
+      <tr *ngFor="let item of productData">
+        <td class="text-decoration-underline" style="cursor:pointer" (click)="productUpdate?.openUpdateModal(item)">{{item.name}}</td>
+        <td>{{item.reference}}</td>
+        <td>{{item.provider}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.unit}}</td>
+        <td>
+          <i class="bi bi-plus-circle-fill me-2 h4" (click)="openModalChangeQuantity(item, '+')"></i>
+          <i class="bi bi-dash-circle-fill me-2 h4" (click)="openModalChangeQuantity(item, '-')"></i>
+          <i (click)="removeComponent?.openRemoveModal(item)" class="h4 bi bi-trash3-fill"></i>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <app-placeholder [isLoading]="isLoading"></app-placeholder>
+    <app-pagination [count]="productCount" (selectPage)="changePage($event)"></app-pagination>
+    <app-product-quantity [mode]="quantityMode"
+                          (addQuantity)="addQuantity($event)"
+                          (subtractQuantity)="subtractQuantity($event)"></app-product-quantity>
+    <app-product-update (submitUpdate)="updateProduct($event)"></app-product-update>
+    <app-remove (validDelete)="deleteProduct($event)"></app-remove>
+    <h6 class="d-flex mt-5 justify-content-center" *ngIf="productCount === 0 && !isLoading">Aucun produit trouvé</h6>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnDeleteModal
+        data-bs-toggle="modal"
+        [attr.data-bs-target]="'#deleteModal' + item?.publicId">
+</button>
+
+<div class="modal fade" [id]="'deleteModal' + item?.publicId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">Supprimer {{item?.name}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Etes vous sure de vouloir supprimer {{item?.name}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" (click)="validDelete.emit(item)">
+          <i class="bi bi-trash-fill pe-2"></i>
+          Oui Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

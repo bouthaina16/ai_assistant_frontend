@@ -1,0 +1,60 @@
+
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnFinalizeModal
+        data-bs-toggle="modal"
+        [attr.data-bs-target]="'#fModal'">
+</button>
+
+<div class="modal fade" [id]="'fModal'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="min-width: 800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">Cloture de la station {{stationName}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Etes vous sure de vouloir cloturer la stations {{stationName}}
+
+        <div *ngIf="transformationOut.length !== 0 || transformationIn.length !== 0">
+          <h6 class="mt-4">Résumé des transformations</h6>
+
+          <div
+               class="d-flex justify-content-between">
+            <div class="col-4 d-flex justify-content-center align-items-center">
+              <div>
+                <div *ngFor="let transIn of transformationIn" class="justify-content-center">
+                  <strong>{{transIn.product?.name + ' : '}}</strong>
+                  <span>{{transIn?.product?.quantity}}</span>
+                  <span class="text-danger fs-6 fw-semibold">{{' - ' + transIn?.quantity}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex justify-content-around align-items-center">
+              <i class="bi bi-arrow-right-square-fill h1"></i>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center">
+              <div>
+                <div *ngFor="let transOut of transformationOut" class="d-block">
+                  <strong>{{transOut.product?.name + ' : '}}</strong>
+                  <span>{{transOut?.product?.quantity}}</span>
+                  <span class="text-success fs-6 fw-semibold">{{' + ' + transOut?.quantity}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="transformationOut.length === 0 && transformationIn.length === 0" class="mt-4">
+          <strong>Aucune transformation affectée à la station</strong>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-sm btn-outline-success" data-bs-dismiss="modal" (click)="valid.emit(stationPublicId)">
+          <i class="bi bi-database-check pe-2"></i>
+          Cloturer</button>
+      </div>
+    </div>
+  </div>
+</div>

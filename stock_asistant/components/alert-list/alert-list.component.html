@@ -1,0 +1,39 @@
+<div class="card border-0 shadow-sm ai-card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Alertes intelligentes</h5>
+      <span class="badge text-bg-light">{{ alerts.length }} éléments</span>
+    </div>
+
+    <div *ngIf="alerts.length; else emptyState" class="d-flex flex-column gap-3">
+      <div *ngFor="let alert of alerts; trackBy: trackByAlert" class="ai-alert-item">
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+              <span [class]="getSeverityClass(alert.severity)">{{ alert.severity }}</span>
+              <span class="badge text-bg-light">{{ getTypeLabel(alert.type) }}</span>
+              <span class="text-muted small">{{ alert.productName }}</span>
+            </div>
+            <h6 class="mb-1">{{ alert.title }}</h6>
+            <p class="text-muted mb-2">{{ alert.message }}</p>
+            <div class="small text-muted">
+              Station: <span class="fw-semibold text-dark">{{ alert.stationName }}</span>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <div class="small text-muted">Détectée le</div>
+            <div class="fw-semibold">{{ alert.createdAt | date: "dd/MM/yyyy HH:mm" }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="text-center text-muted py-4">
+        <i class="bi bi-shield-check fs-2 d-block mb-2"></i>
+        Aucune alerte active pour le moment.
+      </div>
+    </ng-template>
+  </div>
+</div>

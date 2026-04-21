@@ -1,0 +1,56 @@
+
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnTransformationModal
+        data-bs-toggle="modal"
+        data-bs-target="#transformationModal">
+</button>
+
+<div class="modal fade" id="transformationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 850px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">Gérer les transformations de <<{{station.name}}>></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between">
+          <div class="col-4 d-flex justify-content-center">
+            <app-product-selector #selectorIn
+                                  [transformations]="transformations | transformType:transformEnum.INPUT"
+                                  [productsData]="productsIn"
+                                  (addTransformation)="addTransformation(transformEnum.INPUT)"
+                                  (selectProductTransform)="addProductTransform($event)"
+                                  (removeTransformation)="removeTransformation($event)"
+                                  (searchProductEvent)="searchProductsIn.next($event)"
+            ></app-product-selector>
+          </div>
+          <div class="col-4 d-flex justify-content-around align-items-center">
+            <i class="bi bi-arrow-right-square-fill h1"></i>
+            <div class="align-content-center">
+              <div class="justify-content-center d-flex">{{station.machine}}</div>
+              <div class="justify-content-center d-flex">{{station.operator}}</div>
+            </div>
+            <i class="bi bi-arrow-right-square-fill h1"></i>
+          </div>
+          <div class="col-4 d-flex justify-content-center">
+            <app-product-selector #selectorOut
+                                  [transformations]="transformations | transformType:transformEnum.OUTPUT"
+                                  [productsData]="productsOut"
+                                  (addTransformation)="addTransformation(transformEnum.OUTPUT)"
+                                  (selectProductTransform)="addProductTransform($event)"
+                                  (removeTransformation)="removeTransformation($event)"
+                                  (searchProductEvent)="searchProductsOut.next($event)"
+            ></app-product-selector>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

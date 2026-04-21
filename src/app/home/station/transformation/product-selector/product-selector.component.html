@@ -1,0 +1,28 @@
+<div>
+  <div *ngFor="let transformation of transformations" class="d-flex mb-2 justify-content-around align-items-center align-content-center">
+    <i class="bi bi-dash-circle-fill h4 mb-0 me-1" (click)="removeTransformation.emit(transformation.publicId)"></i>
+    <div class="dropdown">
+      <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{(transformation.product?.name | ellipsis:12) || 'Choisir'}}
+      </button>
+      <ul class="dropdown-menu">
+        <div class="mb-3 mx-2">
+          <input type="email" [ngModel]="searchProduct" (ngModelChange)="searchProductEvent.emit($event); searchProduct = $event" class="form-control form-control-sm" placeholder="Rechercher">
+        </div>
+        <li *ngFor="let product of productsData;">
+          <a (click)="selectProductTransform.emit({publicId: transformation?.publicId || '', product: product})"
+             [class.active]="transformation.product?.name === product.name"
+             class="dropdown-item d-flex justify-content-between">
+            <span>{{product.name}}</span>
+            <span class="pe-1 ps-4 fs-6 fw-semibold text-success" [ngClass]="{'text-danger': product.quantity < 20,
+            'text-warning': product.quantity < 100}">{{product.quantity}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="input-group input-group-sm">
+      <input style="width: 80px" type="number" [(ngModel)]="transformation.quantity" class="form-control">
+    </div>
+  </div>
+</div>
+<i class="bi bi-plus-circle-fill h3" (click)="addTransformation.emit()"></i>

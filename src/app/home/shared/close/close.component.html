@@ -1,0 +1,23 @@
+
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnCloseModal
+        data-bs-toggle="modal"
+        [attr.data-bs-target]="'#closeModal' + item?.publicId">
+</button>
+
+<div class="modal fade" [id]="'closeModal' + item?.publicId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Etes vous sure de fermer la facture/ Bl <strong>{{item?.reference}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal" (click)="validClose.emit(item)">
+          <i class="bi bi-trash-fill pe-2"></i>
+          Oui Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

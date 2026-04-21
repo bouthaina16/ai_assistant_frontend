@@ -1,0 +1,136 @@
+
+<button type="button"
+        class="btn btn-success btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+        (click)="createDraft.emit()">
+  <i class="bi bi-plus-circle-fill pe-2"></i>
+{{isBl ? 'Créer un bon de livraison' : 'Créer une facture' }}
+</button>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" style="min-width: 1100px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Créer une facture/Bl, Référence : {{reference}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+          <div class="mb-3">
+            <div class="dropdown" formGroupName="client">
+              <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{formGroup.get('client')?.get('name')?.value || 'Choisir Client'}}</button>
+              <ul class="dropdown-menu">
+                <div class="mb-3 mx-2">
+                  <input type="text" formControlName="search" class="form-control form-control-sm" placeholder="Rechercher">
+                </div>
+                <li *ngFor="let client of clients | async;">
+                  <a (click)="selectClient(client)" style="cursor: pointer"
+                     class="dropdown-item d-flex justify-content-between">
+                    <span>{{client.name}}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="selectedClient.name" class="mt-3">
+              <h6>{{selectedClient.name}}</h6>
+              <h6>{{'Adresse: ' + selectedClient.address}}</h6>
+              <h6>{{'Email: ' +selectedClient.email}}</h6>
+              <h6>{{'Matricule Fiscale :' + selectedClient.fiscalId}}</h6>
+            </div>
+          </div>
+
+          <div formArrayName="productInvoices" class="mt-3">
+            <i class="bi bi-plus-circle-fill h3" (click)="addProductLine()"></i>
+
+            <table *ngIf="productInvoiceArray.length > 0" class="table" >
+              <thead>
+              <tr>
+                <th scope="col">Référence Produit</th>
+                <th scope="col">Nom du produit</th>
+                <th scope="col">Unité</th>
+                <th scope="col">Quantité</th>
+                <th scope="col">P.U</th>
+                <th scope="col">Remise</th>
+                <th scope="col">Montant HT</th>
+                <th scope="col">TVA</th>
+                <th scope="col">Total</th>
+                <th scope="col">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr *ngFor="let product of productInvoiceArray.controls; let i = index" [formGroupName]="i">
+                <td>{{product.get("productReference")?.value}}</td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      {{product.get("productName")?.value || 'Choisir produit'}}
+                    </button>
+                    <ul class="dropdown-menu">
+                      <div class="mb-3 mx-2">
+                        <input type="text" (keyup)="change(i)" formControlName="search" class="form-control form-control-sm" placeholder="Rechercher">
+                      </div>
+                      <li *ngFor="let product of productsMap.get(i)">
+                        <a (click)="selectProduct(product, i)"
+                           class="dropdown-item d-flex justify-content-between" style="cursor: pointer">
+                          <span><strong>{{product.reference}}</strong>{{' - ' + product.name}}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" class="form-control" id="unit" formControlName="unit">
+                </td>
+                <td>
+                  <input type="number" class="form-control" id="quantity" formControlName="quantity">
+                </td>
+                <td>
+                  <input type="number" class="form-control" id="price" formControlName="unitPrice">
+                </td>
+                <td>
+                  <input type="number" max="99" class="form-control" id="discount" formControlName="discount">
+                </td>
+                <td>
+                  {{product | calculateTotal: false | number: '1.3-3'}}
+                </td>
+                <td style="min-width: 76px">
+                  <select class="form-control" id="tva" formControlName="tva">
+                    <option value="7">7 %</option>
+                    <option value="19">19 %</option>
+                    <option value="0">0 %</option>
+                  </select>
+                </td>
+                <td>
+                  {{product | calculateTotal: true | number: '1.3-3'}}
+                </td>
+                <td>
+                  <i class="bi bi-dash-circle-fill h4 mb-0 me-1" (click)="removeProductLine(i)"></i>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="savedInvoice.totalNet" class="mt-3">
+            <h6>{{'Total brut: ' + (savedInvoice.totalBrut | number: '1.3-3')}}</h6>
+            <h6>{{'Total TVA: ' + (savedInvoice.totalTva | number: '1.3-3')}}</h6>
+            <div *ngIf="!isBl" style="display: flex; width: 140px" class="mb-2">
+              <h6 class="mb-0 me-3" for="timber">Timbre:</h6>
+              <input type="number" class="form-control" id="timber" formControlName="timbre">
+            </div>
+            <h6>{{'Total NET: ' + (savedInvoice.totalNet | number: '1.3-3')}}</h6>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" (click)="close()" data-bs-dismiss="modal">
+          Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" (click)="submit()" [disabled]="formGroup.invalid || productInvoiceArray.length === 0">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

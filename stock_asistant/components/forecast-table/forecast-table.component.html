@@ -1,0 +1,54 @@
+<div class="card border-0 shadow-sm ai-card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h5 class="mb-1">Prévisions de demande</h5>
+        <p class="text-muted mb-0 small">Projection basée sur les tendances récentes et la saisonnalité.</p>
+      </div>
+      <span class="badge text-bg-light">{{ forecasts.length }} prévisions</span>
+    </div>
+
+    <div class="table-responsive" *ngIf="forecasts.length; else noForecasts">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Station</th>
+            <th>Période</th>
+            <th>Demande prévue</th>
+            <th>Confiance</th>
+            <th>Tendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let forecast of forecasts; trackBy: trackByForecast">
+            <td>
+              <div class="fw-semibold">{{ forecast.productName }}</div>
+              <div class="text-muted small">{{ forecast.category }}</div>
+            </td>
+            <td>{{ forecast.stationName }}</td>
+            <td>{{ forecast.periodLabel }}</td>
+            <td class="fw-semibold">{{ forecast.predictedDemand }}</td>
+            <td>
+              <span class="fw-semibold" [ngClass]="getConfidenceClass(forecast.confidence)">
+                {{ forecast.confidence }}%
+              </span>
+            </td>
+            <td>
+              <span class="ai-badge ai-badge-info">
+                {{ forecast.trend }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noForecasts>
+      <div class="text-center text-muted py-4">
+        <i class="bi bi-graph-up-arrow fs-2 d-block mb-2"></i>
+        Aucune prévision disponible.
+      </div>
+    </ng-template>
+  </div>
+</div>

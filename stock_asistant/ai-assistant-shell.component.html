@@ -1,0 +1,29 @@
+<div class="container-fluid py-4 ai-assistant-shell">
+  <div class="ai-shell-header d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+    <div>
+      <h2 class="mb-1">AI Assistant</h2>
+      <p class="text-muted mb-0">Smart Inventory insights to optimize stock, forecast demand, and monitor risks.</p>
+    </div>
+    <div class="badge text-bg-dark align-self-start align-self-lg-center px-3 py-2">
+      <i class="bi bi-stars me-2"></i>
+      Smart Inventory
+    </div>
+  </div>
+
+  <ul class="nav nav-pills flex-wrap gap-2 mb-4 ai-nav">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="dashboard" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="recommendations" routerLinkActive="active">Recommendations</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="forecasts" routerLinkActive="active">Forecasts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="alerts" routerLinkActive="active">Alerts</a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,62 @@
+<div *ngIf="isLoading" class="d-flex justify-content-center py-5">
+  <div class="spinner-border text-dark" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="!isLoading" class="d-flex flex-column gap-4">
+  <section>
+    <div class="row g-3">
+      <div class="col-12 col-sm-6 col-xl-3" *ngFor="let kpi of kpis">
+        <app-kpi-card [kpi]="kpi"></app-kpi-card>
+      </div>
+    </div>
+  </section>
+
+  <section class="card border-0 shadow-sm">
+    <div class="card-body">
+      <div class="d-flex align-items-start gap-3">
+        <div class="fs-3 text-dark">
+          <i class="bi bi-cpu"></i>
+        </div>
+        <div>
+          <h5 class="card-title mb-1">AI Summary</h5>
+          <p class="text-muted mb-0">{{ summaryText }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="row g-4">
+      <div class="col-12 col-xl-7">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="mb-0">Priority Recommendations</h4>
+          <a class="btn btn-sm btn-outline-dark" routerLink="../recommendations">View all</a>
+        </div>
+        <div class="d-flex flex-column gap-3">
+          <app-recommendation-card
+            *ngFor="let recommendation of recommendations"
+            [recommendation]="recommendation">
+          </app-recommendation-card>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="mb-0">Active Alerts</h4>
+          <a class="btn btn-sm btn-outline-dark" routerLink="../alerts">Open alerts</a>
+        </div>
+        <app-alert-list [alerts]="alerts"></app-alert-list>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Demand Forecast Snapshot</h4>
+      <a class="btn btn-sm btn-outline-dark" routerLink="../forecasts">Open forecasts</a>
+    </div>
+    <app-forecast-table [forecasts]="forecasts"></app-forecast-table>
+  </section>
+</div>

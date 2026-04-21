@@ -1,0 +1,19 @@
+<nav *ngIf="pages.length > 0" aria-label="...">
+  <ul class="pagination pagination justify-content-end">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a (click)="select(currentPage - 1)" class="page-link" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item" [class.active]="currentPage === page" *ngFor="let page of pages | paginationFormatter:currentPage">
+      <a class="page-link"
+         (click)="select(page)" >{{page}}
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage === pages[pages.length - 1]">
+      <a (click)="select(currentPage + 1)" class="page-link"  aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

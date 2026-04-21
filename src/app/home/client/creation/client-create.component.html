@@ -1,0 +1,56 @@
+
+<button type="button"
+        class="btn btn-success btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+        (click)="createDraft.emit()">
+  <i class="bi bi-plus-circle-fill pe-2"></i>
+  Créer un client
+</button>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Créer un produit, Référence : {{reference}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nom du client</label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label">Addresse</label>
+            <input type="text" class="form-control" id="address" formControlName="address">
+          </div>
+
+          <div class="mb-3">
+            <label for="tel" class="form-label">Télephone</label>
+            <input type="text" class="form-control" id="tel" formControlName="tel">
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email">
+          </div>
+
+          <div class="mb-3">
+            <label for="fiscalId" class="form-label">Matricule fiscale</label>
+            <input type="text" class="form-control" id="fiscalId" formControlName="fiscalId">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+          Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

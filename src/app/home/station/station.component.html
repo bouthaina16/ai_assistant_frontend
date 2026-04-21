@@ -1,0 +1,44 @@
+<div class="p-2 p-lg-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <app-station-create [reference]="reference" (createStationDraft)="createStationDraft()" (submitCreation)="createStation($event)" class="ms-auto"></app-station-create>
+  </div>
+  <div class="mt-3">
+    <table *ngIf="stations | async as stationData" class="table">
+      <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Référence</th>
+        <th scope="col">Opérateur</th>
+        <th scope="col">Date</th>
+        <th scope="col">Durée</th>
+        <th scope="col">Machine</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="stationCount > 0">
+        <tr *ngFor="let item of stationData">
+          <td *ngIf="!item.closed" class="text-decoration-underline" style="cursor:pointer" (click)="stationUpdate?.openUpdateModal(item)">{{item.name}}</td>
+          <td *ngIf="item.closed">{{item.name}}</td>
+          <td>{{item.reference}}</td>
+          <td>{{item.operator}}</td>
+          <td>{{item.date}}</td>
+          <td>{{item.duration}}</td>
+          <td>{{item.machine}}</td>
+          <td>
+            <i *ngIf="!item.closed" (click)="transformationComponent?.openTransformationModal(item)" class="bi bi-pencil-square h4"></i>
+            <i *ngIf="item.closed" class="bi bi-bag-check-fill h4"></i>
+            <i *ngIf="!item.closed" (click)="finalizeComponent?.openModal(item)" class="bi bi-database-check h4 ms-2"></i>
+            <i (click)="removeComponent?.openRemoveModal(item)" class="h4 bi ms-2 bi-trash3-fill" *ngIf="item.closed"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <app-placeholder [isLoading]="isLoading"></app-placeholder>
+    <app-pagination [count]="stationCount" (selectPage)="changePage($event)"></app-pagination>
+    <app-remove (validDelete)="deleteStation($event)"></app-remove>
+    <app-finalize (valid)="finalize($event)"></app-finalize>
+    <app-transformation (reload)="reload()"></app-transformation>
+    <app-station-update (submitUpdate)="updateStation($event)"></app-station-update>
+    <h6 class="d-flex mt-5 justify-content-center" *ngIf="stationCount === 0 && !isLoading">Aucune station trouvée</h6>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="container mt-4 mt-lg-5 mt-xxl-5 d-flex justify-content-center pt-lg-5">
+  <div class="card">
+    <img src="stok.png" class="card-img-left" alt="no">
+    <div class="card-body">
+      <h5 class="card-title">Accéder à Stok</h5>
+      <form [formGroup]="loginUserFormGroup">
+        <div class="d-block px-0 mx-0 row">
+          <label class="px-0" for="username">Nom Utilisateur:</label>
+          <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                 [autofocus]="true"
+                 id="username"
+                 type="text"
+                 class="form-control"
+                 formControlName="username" />
+        </div>
+
+        <div class="d-block px-0 mx-0 mt-5 row">
+          <label class="px-0" for="password">Mot de passe:</label>
+          <input (keydown.enter)="!loginUserFormGroup.invalid && onSubmit()"
+                 id="password"
+                 type="password"
+                 class="form-control"
+                 formControlName="password" />
+        </div>
+      </form>
+      <div class="d-grid d-sm-flex justify-content-sm-end mt-2">
+        <button label="Entrer"
+                class="btn-primary w-full d-inline-grid btn btn-success d-sm-flex"
+                [disabled]="loginUserFormGroup.invalid"
+                (click)="onSubmit()">Entrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="sticky-bottom position-absolute bottom-0 end-0 fs-6 d-flex px-2">
+  <p class="mb-0">Yesmind Technologies © 2024</p>
+</div>

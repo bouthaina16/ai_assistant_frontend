@@ -1,0 +1,7 @@
+.dropdown-item {
+  cursor: pointer;
+  &.active, &:active, &.focus, &:focus {
+    color: white;
+    background-color: black;
+  }
+}

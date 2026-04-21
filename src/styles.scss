@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+@import "./app/stock_assistant/ai-assistant.component.scss";
+
+button {
+  border-radius: 6px;
+  margin: 0;
+  font-size: 1rem;
+  line-height: normal;
+}
+
+i {
+  cursor: pointer;
+}

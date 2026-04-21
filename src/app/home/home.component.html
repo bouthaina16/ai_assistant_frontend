@@ -1,0 +1,28 @@
+<nav class="navbar bg-body-tertiary sticky-top border-bottom border-body">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="stok.png" alt="Logo" height="24" class="d-inline-block align-text-top">
+    </a>
+      <ul class="nav nav-underline flex-row me-auto my-2 my-lg-0">
+        <li class="nav-item ms-2 me-3">
+          <a class="nav-link text-black" aria-current="page" routerLink="product" routerLinkActive="active">Produit</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-black" aria-current="page" routerLink="station" routerLinkActive="active">Station</a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-black" aria-current="page" routerLink="client" routerLinkActive="active">Client</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-black me-3" aria-current="page" routerLink="bl" routerLinkActive="active">Bon de Livraison</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-black me-3" aria-current="page" routerLink="invoice" routerLinkActive="active">Facture</a>
+        </li>
+      </ul>
+    <button class="btn btn-sm btn-outline-dark" type="submit" (click)="disconnect()">
+      Déconnecter <i class="bi bi-backspace-reverse-fill ps-2"></i></button>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

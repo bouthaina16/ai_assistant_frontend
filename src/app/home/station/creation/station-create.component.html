@@ -1,0 +1,55 @@
+
+<button type="button"
+        class="btn btn-success btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#modalStationCreate"
+        (click)="createStationDraft.emit()">
+  <i class="bi bi-plus-circle-fill pe-2"></i>
+  Créer une station
+</button>
+
+<div class="modal fade" id="modalStationCreate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Créer une station, Référence : {{reference}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+          <div class="mb-3">
+            <label for="nameStation" class="form-label">Nom/Ref de Station</label>
+            <input type="text" class="form-control" id="nameStation" formControlName="name">
+          </div>
+          <div class="mb-3">
+            <label for="operateur" class="form-label">Opérateur</label>
+            <input type="text" class="form-control" id="operateur" formControlName="operator">
+          </div>
+
+          <div class="mb-3">
+            <label for="machine" class="form-label">Machine</label>
+            <input type="text" class="form-control" id="machine" formControlName="machine">
+          </div>
+
+          <div class="mb-3">
+            <label for="duration" class="form-label">Duration</label>
+            <input type="number" class="form-control" id="duration" formControlName="duration">
+          </div>
+
+          <div class="mb-3">
+            <label for="stationDate" class="form-label">Date</label>
+            <input type="date" class="form-control" id="stationDate" formControlName="date">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
+          Fermer</button>
+        <button type="button" class="btn btn-sm btn-success" data-bs-dismiss="modal" (click)="submit()" [disabled]="formGroup.invalid">
+          <i class="bi bi-floppy2 pe-2"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

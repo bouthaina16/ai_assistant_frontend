@@ -1,0 +1,111 @@
+<button type="button"
+        class="btn btn-success btn-sm d-none"
+        #btnOpenClientOrderModal
+        data-bs-toggle="modal"
+        data-bs-target="#clientOrderModal">
+  Open client order modal
+</button>
+
+<div class="modal fade" id="clientOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Commandes client - {{ selectedClient?.name }}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-3 align-items-end mb-3">
+          <div class="col-md-3">
+            <label class="form-label">Type de produit</label>
+            <select class="form-select" [(ngModel)]="productType" (ngModelChange)="loadProducts()">
+              <option [ngValue]="productTypeEnum.FINAL">Produit fini</option>
+              <option [ngValue]="productTypeEnum.RAW">Matière première</option>
+            </select>
+          </div>
+
+          <div class="col-md-5">
+            <label class="form-label">Produit</label>
+            <select class="form-select" [(ngModel)]="lineForm.productPublicId">
+              <option value="">Sélectionner</option>
+              <option *ngFor="let product of products" [value]="product.publicId">
+                {{ product.name }} (stock: {{ product.quantity }})
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Quantité</label>
+            <input type="number" class="form-control" min="1" [(ngModel)]="lineForm.quantity">
+          </div>
+
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-outline-dark" type="button" (click)="addLine()">
+              Ajouter ligne
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive mb-4" *ngIf="lines.length > 0">
+          <table class="table table-sm align-middle">
+            <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Quantité</th>
+              <th>Prix unitaire</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let line of lines; let i = index">
+              <td>{{ line.productName }}</td>
+              <td>{{ line.quantity }}</td>
+              <td>{{ line.unitPrice | number:'1.2-2' }}</td>
+              <td>{{ line.totalPrice | number:'1.2-2' }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeLine(i)">
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h6>Commandes existantes</h6>
+        <div class="table-responsive" *ngIf="orders.length > 0; else noOrders">
+          <table class="table table-sm">
+            <thead>
+            <tr>
+              <th>Référence</th>
+              <th>Date</th>
+              <th>Total net</th>
+              <th>Lignes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let order of orders">
+              <td>{{ order.reference }}</td>
+              <td>{{ order.creationDate | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ order.totalNet | number:'1.2-2' }}</td>
+              <td>{{ order.productInvoices.length }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #noOrders>
+          <p class="text-muted">Aucune commande client trouvée.</p>
+        </ng-template>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-success btn-sm" (click)="saveOrder()" [disabled]="isSaving || lines.length === 0">
+          Enregistrer commande
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
