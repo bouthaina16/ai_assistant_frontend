@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Observable, catchError, forkJoin, map, of } from "rxjs";
-import { StockDataApiService } from "./stock-data-api.service";
+import { HttpClient } from "@angular/common/http";
+import { Observable, catchError, map, of } from "rxjs";
+import { AI_ASSISTANT_HOST } from "../../../environments/environment";
 
-export interface AiProductModel {
+export interface StockProductModel {
   publicId: string;
   name: string;
   quantity: number;
@@ -11,49 +12,74 @@ export interface AiProductModel {
   type: string;
 }
 
-export interface AiClientModel {
-  id: string;
+export interface StockClientModel {
+  publicId: string;
   name: string;
+  reference: string;
+  address: string;
+  email: string;
+  fiscalId: string;
+  tel: string;
 }
 
-export interface AiOrderModel {
-  id: string;
-  productInvoices: Array<{ productPublicId: string; quantity: number }>;
+export interface StockInvoiceLineModel {
+  productPublicId: string;
+  quantity: number;
+  price: number;
+  discount: number;
+  tax: number;
+}
+
+export interface StockInvoiceModel {
+  publicId: string;
+  reference: string;
+  clientPublicId: string;
+  date: string;
+  total: number;
+  productInvoices: StockInvoiceLineModel[];
+}
+
+interface ProductSearchResponse {
+  products: StockProductModel[];
+  count: number;
+}
+
+interface ClientSearchResponse {
+  clients: StockClientModel[];
+  count: number;
+}
+
+interface InvoiceSearchResponse {
+  invoices: StockInvoiceModel[];
+  count: number;
 }
 
 @Injectable({
   providedIn: "root"
 })
 export class AiIntegrationService {
-  constructor(private readonly stockDataApiService: StockDataApiService) {
+  private readonly baseUrl = `${AI_ASSISTANT_HOST}/api/ai/stock`;
+
+  constructor(private readonly http: HttpClient) {
   }
 
-  getProducts(): Observable<AiProductModel[]> {
-    return forkJoin([
-      this.stockDataApiService.searchProducts("RAW"),
-      this.stockDataApiService.searchProducts("FINAL")
-    ]).pipe(
-      map(([raw, final]) => [...raw.products, ...final.products]),
+  getProducts(): Observable<StockProductModel[]> {
+    return this.http.get<ProductSearchResponse>(`${this.baseUrl}/products`).pipe(
+      map((response) => response.products ?? []),
       catchError(() => of([]))
     );
   }
 
-  getClients(): Observable<AiClientModel[]> {
-    return this.stockDataApiService.searchClients().pipe(
-      map((response) => response.clients.map((client) => ({
-        id: client.publicId,
-        name: client.name
-      }))),
+  getClients(): Observable<StockClientModel[]> {
+    return this.http.get<ClientSearchResponse>(`${this.baseUrl}/clients`).pipe(
+      map((response) => response.clients ?? []),
       catchError(() => of([]))
     );
   }
 
-  getOrders(): Observable<AiOrderModel[]> {
-    return this.stockDataApiService.searchInvoices().pipe(
-      map((response) => response.invoices.map((invoice) => ({
-        id: invoice.publicId,
-        productInvoices: invoice.productInvoices ?? []
-      }))),
+  getOrders(): Observable<StockInvoiceModel[]> {
+    return this.http.get<InvoiceSearchResponse>(`${this.baseUrl}/invoices`).pipe(
+      map((response) => response.invoices ?? []),
       catchError(() => of([]))
     );
   }

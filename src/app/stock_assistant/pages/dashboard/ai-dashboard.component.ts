@@ -12,8 +12,7 @@ import { AiAssistantService } from "../../services/ai-assistant.service";
 import { RecommendationService } from "../../services/recommendation.service";
 import { ForecastService } from "../../services/forecast.service";
 import { AnomalyService } from "../../services/anomaly.service";
-import { AiIntegrationService, AiProductModel } from "../../services/ai-integration.service";
-import { StockDataApiService } from "../../services/stock-data-api.service";
+import { AiIntegrationService, StockProductModel } from "../../services/ai-integration.service";
 
 @Component({
   selector: "app-ai-dashboard",
@@ -34,7 +33,7 @@ export class AiDashboardComponent implements OnInit {
   recommendations: Recommendation[] = [];
   forecasts: Forecast[] = [];
   alerts: Alert[] = [];
-  stockProductsPreview: AiProductModel[] = [];
+  stockProductsPreview: StockProductModel[] = [];
   stockClientsCount = 0;
   stockOrdersCount = 0;
   lastSyncAt: Date | null = null;
@@ -45,8 +44,7 @@ export class AiDashboardComponent implements OnInit {
     private recommendationService: RecommendationService,
     private forecastService: ForecastService,
     private anomalyService: AnomalyService,
-    private aiIntegrationService: AiIntegrationService,
-    private stockDataApiService: StockDataApiService
+    private aiIntegrationService: AiIntegrationService
   ) {
   }
 
@@ -66,9 +64,7 @@ export class AiDashboardComponent implements OnInit {
         }
       },
       error: () => {
-        this.dataSyncError = this.stockDataApiService.hasToken()
-          ? "Stock API data unavailable (check stok backend / database)."
-          : "Authentication to stock API failed. Verify stockroot/Root@123 and backend security config.";
+        this.dataSyncError = "AI backend data unavailable (check ai_assistant integration endpoints).";
       }
     });
 
